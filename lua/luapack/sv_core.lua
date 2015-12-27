@@ -61,6 +61,7 @@ function luapack.AddFile(filepath)
 
 	if luapack.IsBlacklistedFile(filepath) then
 		luapack.DebugMsg("Adding file through normal AddCSLuaFile '" .. filepath .. "'.")
+		luapack.AddCSLuaFile(filepath)
 		return false
 	end
 
