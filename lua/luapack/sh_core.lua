@@ -1,13 +1,22 @@
 luapack = luapack or {}
 
+if CLIENT then
+	local suppressLog = true
+end
+
 local green = {r = 0, g = 255, b = 0, a = 255}
 function luapack.LogMsg(...)
+	if CLIENT and suppressLog then return end
+
 	MsgC(green, "[LuaPack] ")
 	print(...)
 end
 
+local suppressDebug = true
 local yellow = {r = 255, g = 255, b = 0, a = 255}
 function luapack.DebugMsg(...)
+	if suppressDebug then return end
+
 	MsgC(yellow, "[LuaPack] ")
 	print(...)
 end
