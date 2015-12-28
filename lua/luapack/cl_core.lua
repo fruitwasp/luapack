@@ -19,8 +19,6 @@ include("sh_core.lua")
 
 luapack.LogMsg("Found the current pack file hash ('" .. currenthash .. "')!")
 
-luapack.CurrentHash = currenthash
-
 include("cl_file.lua")
 include("cl_directory.lua")
 
@@ -92,7 +90,7 @@ function luapack.BuildFileList(filepath)
 	return dir
 end
 
-luapack.RootDirectory = luapack.BuildFileList("download/data/luapack/" .. luapack.CurrentHash .. ".dat")
+luapack.RootDirectory = luapack.BuildFileList("download/data/luapack/" .. currentHash .. ".dat")
 
 local totaltime = 0
 

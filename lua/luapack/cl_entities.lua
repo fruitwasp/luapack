@@ -2,11 +2,11 @@ luapack.gamemodeRegister = luapack.gamemodeRegister or gamemode.Register
 luapack.weaponsOnLoaded = luapack.weaponsOnLoaded or weapons.OnLoaded
 luapack.scripted_entsOnLoaded = luapack.scripted_entsOnLoaded or scripted_ents.OnLoaded
 
-local function RemoveExtension(filename)
+local function removeExtension(filename)
 	return string.match(filename, "([^%.]+).lua")
 end
 
-function luapack.LoadAutorun()
+local function loadAutorun()
 	local files = file.Find("autorun/*.lua", "LUA")
 	for i = 1, #files do
 		include("autorun/" .. files[i])
@@ -18,29 +18,29 @@ function luapack.LoadAutorun()
 	end
 end
 
-function luapack.LoadPostProcess()
+local function loadPostProcess()
 	local files = file.Find("postprocess/*.lua", "LUA")
 	for i = 1, #files do
 		include("postprocess/" .. files[i])
 	end
 end
 
-function luapack.LoadVGUI()
+local function loadVGUI()
 	local files = file.Find("vgui/*.lua", "LUA")
 	for i = 1, #files do
 		include("vgui/" .. files[i])
 	end
 end
 
-function luapack.LoadMatproxy()
+local function loadMatProxy()
 	local files = file.Find("matproxy/*.lua", "LUA")
 	for i = 1, #files do
 		include("matproxy/" .. files[i])
 	end
 end
 
-function luapack.LoadWeapon(obj)
-	local name = obj:IsDirectory() and obj:GetPath() or RemoveExtension(obj:GetPath())
+local function loadWeapon(obj)
+	local name = obj:IsDirectory() and obj:GetPath() or removeExtension(obj:GetPath())
 
 	SWEP = {
 		Base = "weapon_base",
@@ -70,19 +70,19 @@ function luapack.LoadWeapon(obj)
 	SWEP = nil
 end
 
-function luapack.LoadWeapons()
+local function loadWeapons()
 	local files, folders = luapack.RootDirectory:Get("weapons/*")
 	for i = 1, #files do
-		luapack.LoadWeapon(files[i])
+		loadWeapon(files[i])
 	end
 
 	for i = 1, #folders do
-		luapack.LoadWeapon(folders[i])
+		loadWeapon(folders[i])
 	end
 end
 
-function luapack.LoadEntity(obj)
-	local name = obj:IsDirectory() and obj:GetPath() or RemoveExtension(obj:GetPath())
+local function loadEntity(obj)
+	local name = obj:IsDirectory() and obj:GetPath() or removeExtension(obj:GetPath())
 
 	ENT = {}
 
@@ -108,19 +108,19 @@ function luapack.LoadEntity(obj)
 	ENT = nil
 end
 
-function luapack.LoadEntities()
+local function loadEntities()
 	local files, folders = luapack.RootDirectory:Get("entities/*")
 	for i = 1, #files do
-		luapack.LoadEntity(files[i])
+		loadEntity(files[i])
 	end
 
 	for i = 1, #folders do
-		luapack.LoadEntity(folders[i])
+		loadEntity(folders[i])
 	end
 end
 
-function luapack.LoadEffect(obj)
-	local name = obj:IsDirectory() and obj:GetPath() or RemoveExtension(obj:GetPath())
+local function loadEffect(obj)
+	local name = obj:IsDirectory() and obj:GetPath() or removeExtension(obj:GetPath())
 
 	EFFECT = {}
 
@@ -142,14 +142,14 @@ function luapack.LoadEffect(obj)
 	EFFECT = nil
 end
 
-function luapack.LoadEffects()
+local function loadEffects()
 	local files, folders = luapack.RootDirectory:Get("effects/*")
 	for i = 1, #files do
-		luapack.LoadEffect(files[i])
+		loadEffect(files[i])
 	end
 
 	for i = 1, #folders do
-		luapack.LoadEffect(folders[i])
+		loadEffect(folders[i])
 	end
 end
 
@@ -159,26 +159,26 @@ gamemode.Register = function(gm, name, base)
 	local ret = luapack.gamemodeRegister(gm, name, base)
 
 	if name == "base" then
-		luapack.LoadAutorun()
-		luapack.LoadPostProcess()
-		luapack.LoadVGUI()
-		luapack.LoadMatproxy()
+		loadAutorun()
+		loadPostProcess()
+		loadVGUI()
+		loadMatProxy()
 
 		-- these use a very simple system, no inheritance, no nothing
 		-- let's hope we can load them directly
 		-- load them after base just to be safe
-		luapack.LoadEffects()
+		loadEffects()
 	end
 
 	return ret
 end
 
 function weapons.OnLoaded()
-	luapack.LoadWeapons()
+	loadWeapons()
 	return luapack.weaponsOnLoaded()
 end
 
 function scripted_ents.OnLoaded()
-	luapack.LoadEntities()
+	loadEntities()
 	return luapack.scripted_entsOnLoaded()
 end
