@@ -1,4 +1,4 @@
-local currenthash = nil
+local currentHash = nil
 for i = 1, 2047 do
 	local str = util.NetworkIDToString(i)
 	if str == nil then
@@ -6,18 +6,18 @@ for i = 1, 2047 do
 	end
 
 	if string.sub(str, 1, 12) == "luapackhash_" then
-		currenthash = string.sub(str, 13)
+		currentHash = string.sub(str, 13)
 		break
 	end
 end
 
-if currenthash == nil then
+if currentHash == nil then
 	error("unable to retrieve current file hash, critical luapack error")
 end
 
 include("sh_core.lua")
 
-luapack.LogMsg("Found the current pack file hash ('" .. currenthash .. "')!")
+luapack.LogMsg("Found the current pack file hash ('" .. currentHash .. "')!")
 
 include("cl_file.lua")
 include("cl_directory.lua")
